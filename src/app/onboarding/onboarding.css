@@ -1,0 +1,321 @@
+
+        .zot-onboarding * { box-sizing: border-box; }
+
+        .zot-onboarding {
+          margin: 0;
+          font-family: 'DM Sans', sans-serif;
+          color: #263b59;
+          background: #f7f8fc;
+        }
+
+        .zot-onboarding button, .zot-onboarding input, .zot-onboarding select { font: inherit; }
+        .zot-onboarding button { cursor: pointer; }
+
+        .zot-onboarding .app {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          background:
+            radial-gradient(ellipse at 8% 12%, #e9efff 0, transparent 32%),
+            radial-gradient(ellipse at 92% 88%, #fff0df 0, transparent 28%),
+            #f8f9fc;
+        }
+
+        .zot-onboarding .topbar {
+          padding: 25px 6%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .zot-onboarding .brand {
+          display: flex;
+          align-items: center;
+          gap: 11px;
+          font: 800 23px 'Manrope', sans-serif;
+          letter-spacing: -1px;
+          color: #19345c;
+        }
+
+        .zot-onboarding .brand-icon {
+          width: 38px;
+          height: 38px;
+          display: grid;
+          place-items: center;
+          border-radius: 12px;
+          color: white;
+          background: #254c83;
+        }
+
+        .zot-onboarding .top-note { color: #8792a6; font-size: 13px; }
+
+        .zot-onboarding .main {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 15px 22px 55px;
+        }
+
+        .zot-onboarding .card {
+          width: 100%;
+          max-width: 640px;
+          padding: 42px 44px 34px;
+          background: rgba(255,255,255,.96);
+          border: 1px solid #e9edf4;
+          border-radius: 24px;
+          box-shadow: 0 20px 70px #243c6310;
+          animation: onboarding-appear .25s ease;
+        }
+
+        @keyframes onboarding-appear {
+          from { opacity: 0; transform: translateY(7px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .zot-onboarding .eyebrow {
+          color: #5273a5;
+          text-transform: uppercase;
+          letter-spacing: 1.5px;
+          font-size: 11px;
+          font-weight: 700;
+          margin-bottom: 14px;
+        }
+
+        .zot-onboarding h1, .zot-onboarding h2 {
+          font-family: 'Manrope', sans-serif;
+          color: #19345c;
+          letter-spacing: -1.2px;
+        }
+
+        .zot-onboarding h1 {
+          font-size: clamp(36px, 5vw, 52px);
+          line-height: 1.15;
+          margin: 0 0 17px;
+        }
+
+        .zot-onboarding h2 {
+          font-size: 30px;
+          line-height: 1.3;
+          margin: 0 0 12px;
+        }
+
+        .zot-onboarding .accent { color: #5276ad; }
+
+        .zot-onboarding .description, .zot-onboarding .helper {
+          color: #7b879b;
+          line-height: 1.7;
+          font-size: 14px;
+        }
+
+        .zot-onboarding .description { margin: 0 0 25px; }
+        .zot-onboarding .helper { margin: 0 0 26px; }
+
+        .zot-onboarding .welcome-art {
+          height: 145px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 13px;
+          background: #edf2ff;
+          border-radius: 17px;
+          margin: 26px 0;
+        }
+
+        .zot-onboarding .mini-day {
+          width: 86px;
+          height: 100px;
+          padding: 11px;
+          background: white;
+          border-radius: 11px;
+          box-shadow: 0 5px 15px #254c8310;
+          transform: rotate(-5deg);
+        }
+
+        .zot-onboarding .mini-day:nth-child(2) { transform: translateY(-7px); }
+        .zot-onboarding .mini-day:nth-child(3) { transform: rotate(5deg); }
+        .zot-onboarding .mini-line { height: 6px; background: #e9edf5; border-radius: 5px; margin-bottom: 8px; }
+        .zot-onboarding .mini-block { height: 21px; background: #dce7ff; border-radius: 5px; margin-bottom: 7px; }
+        .zot-onboarding .warm { background: #ffe5c9; }
+
+        .zot-onboarding .primary {
+          background: #254c83;
+          color: white;
+          border: none;
+          border-radius: 11px;
+          padding: 15px 22px;
+          font-size: 14px;
+          font-weight: 700;
+          transition: .2s;
+        }
+
+        .zot-onboarding .primary:hover { background: #193b6d; transform: translateY(-1px); }
+        .zot-onboarding .primary:disabled { background: #aab8cc; cursor: not-allowed; transform: none; }
+        .zot-onboarding .full { width: 100%; }
+
+        .zot-onboarding .welcome-footer {
+          text-align: center;
+          margin-top: 16px;
+          font-size: 12px;
+          color: #929bad;
+        }
+
+        .zot-onboarding .progress-section { margin-bottom: 32px; }
+        .zot-onboarding .progress-meta { display: flex; justify-content: space-between; color: #8590a3; font-size: 11px; font-weight: 700; margin-bottom: 10px; }
+        .zot-onboarding .progress-track { height: 5px; background: #edf0f6; border-radius: 8px; overflow: hidden; }
+        .zot-onboarding .progress-fill { height: 100%; background: #315a94; transition: width .3s; border-radius: 8px; }
+
+        .zot-onboarding .field { display: block; margin-bottom: 20px; }
+        .zot-onboarding .field-label { display: block; font-size: 13px; font-weight: 700; color: #52627b; margin-bottom: 10px; }
+
+        .zot-onboarding .field input:not([type="range"]), .zot-onboarding .field select {
+          width: 100%;
+          min-height: 49px;
+          padding: 12px 14px;
+          border: 1px solid #dfe5ef;
+          background: #fbfcff;
+          border-radius: 11px;
+          color: #304766;
+          outline: none;
+        }
+
+        .zot-onboarding .field input:focus, .zot-onboarding .field select:focus {
+          border-color: #5279b4;
+        }
+
+        .zot-onboarding .study-input {
+          width: 100%;
+          padding: 17px;
+          border: 1px solid #dfe5ef;
+          border-radius: 12px;
+          background: #fbfcff;
+          color: #254c83;
+          font-size: 18px;
+          outline: none;
+        }
+
+        .zot-onboarding .study-input:focus {
+          border-color: #5279b4;
+          box-shadow: 0 0 0 3px #315a9415;
+        }
+
+        .zot-onboarding .input-hint {
+          color: #8a94a7;
+          font-size: 12px;
+          margin-top: 9px;
+        }
+
+        .zot-onboarding .two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+        .zot-onboarding .slider-panel {
+          background: #fbfcff;
+          border: 1px solid #e4e9f2;
+          border-radius: 14px;
+          padding: 19px;
+          margin-bottom: 15px;
+        }
+
+        .zot-onboarding .slider-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+        .zot-onboarding .slider-heading strong { color: #254c83; font-size: 19px; white-space: nowrap; }
+        .zot-onboarding .slider-heading strong span { font-size: 12px; font-weight: 500; color: #7c879b; }
+
+        .zot-onboarding input[type="range"] { width: 100%; accent-color: #315a94; cursor: pointer; }
+        .zot-onboarding .range-labels { display: flex; justify-content: space-between; color: #8a94a7; font-size: 11px; }
+
+        .zot-onboarding .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+        .zot-onboarding .option {
+          min-height: 68px;
+          padding: 15px;
+          border: 1px solid #e2e7f0;
+          border-radius: 12px;
+          background: white;
+          color: #354966;
+          font-size: 14px;
+          font-weight: 600;
+          text-align: left;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .zot-onboarding .option:hover { border-color: #8ca7d1; }
+        .zot-onboarding .option.selected { background: #eef3ff; border: 1.5px solid #315a94; color: #214779; }
+        .zot-onboarding .check { width: 20px; height: 20px; flex-shrink: 0; display: grid; place-items: center; border: 1px solid #d9e0ec; border-radius: 50%; font-size: 11px; }
+        .zot-onboarding .selected .check { background: #315a94; color: white; border-color: #315a94; }
+
+        .zot-onboarding .nav {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 12px;
+          margin-top: 30px;
+          padding-top: 23px;
+          border-top: 1px solid #eef0f5;
+        }
+
+        .zot-onboarding .back {
+          border: none;
+          background: transparent;
+          color: #65748c;
+          font-size: 14px;
+          font-weight: 600;
+          padding: 13px 5px;
+        }
+
+        .zot-onboarding .back:hover { color: #19345c; }
+
+        .zot-onboarding .success { text-align: center; }
+        .zot-onboarding .success-icon {
+          width: 74px;
+          height: 74px;
+          display: grid;
+          place-items: center;
+          margin: 0 auto 24px;
+          border-radius: 24px;
+          background: #e8f3e9;
+          color: #37774b;
+          font-size: 34px;
+        }
+
+        .zot-onboarding .summary {
+          margin: 26px 0;
+          padding: 19px;
+          border: 1px solid #edf0f5;
+          border-radius: 14px;
+          background: #f7f9fd;
+          text-align: left;
+        }
+
+        .zot-onboarding .summary-title { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: #8190a6; margin-bottom: 10px; }
+        .zot-onboarding .summary-row { display: flex; justify-content: space-between; gap: 15px; padding: 10px 0; border-bottom: 1px solid #e9edf4; font-size: 12px; }
+        .zot-onboarding .summary-row:last-child { border-bottom: none; }
+        .zot-onboarding .summary-row span:first-child { color: #77849a; }
+        .zot-onboarding .summary-row span:last-child { color: #304766; font-weight: 700; text-align: right; overflow-wrap: anywhere; }
+
+        @media (max-width: 600px) {
+          .zot-onboarding .topbar { padding: 20px; }
+          .zot-onboarding .top-note { font-size: 11px; }
+          .zot-onboarding .main { padding: 10px 14px 32px; align-items: flex-start; }
+          .zot-onboarding .card { padding: 29px 21px 24px; border-radius: 20px; }
+          .zot-onboarding h2 { font-size: 26px; }
+          .zot-onboarding .two-columns { grid-template-columns: 1fr; gap: 0; }
+          .zot-onboarding .option-grid { grid-template-columns: 1fr; }
+        }
+
+.zot-onboarding .form-error { color:#a34632; font-size:13px; line-height:1.6; margin:16px 0; }
+.zot-onboarding .saved-note { color:#65748c; font-size:12px; line-height:1.7; }
+.zot-onboarding .onboarding-links { display:flex; gap:18px; align-items:center; font-size:12px; color:#65748c; }
+.zot-onboarding .onboarding-links a:hover { text-decoration:underline; }
+.zot-onboarding .eyebrow { display:block; }
+.zot-onboarding h1 { font-weight:800; }
+.zot-onboarding h1>span { color:#5276ad; }
+.zot-onboarding .field input { font-size:14px; }
+.zot-onboarding .card h1,.zot-onboarding .card h2 { overflow-wrap:anywhere; }
+.zot-onboarding .card h1:focus,.zot-onboarding .card h2:focus { outline:none; }
+.zot-onboarding button:focus-visible,.zot-onboarding a:focus-visible,.zot-onboarding input:focus-visible,.zot-onboarding select:focus-visible { outline:2px solid #315a94; outline-offset:3px; }
+.zot-onboarding .field input:focus-visible,.zot-onboarding .field select:focus-visible { box-shadow:0 0 0 3px #315a9415; }
+.zot-onboarding .summary-row span { min-width:0; }
+@media(max-width:600px) { .zot-onboarding .field input,.zot-onboarding .field select { font-size:16px; } .zot-onboarding .progress-meta { gap:12px; font-size:10px; } .zot-onboarding .slider-heading { flex-wrap:wrap; } }
+@media(prefers-reduced-motion:reduce) { .zot-onboarding .card { animation:none; } .zot-onboarding .primary,.zot-onboarding .progress-fill { transition:none; } .zot-onboarding .primary:hover { transform:none; } }
+@media(max-width:600px) { .zot-onboarding .topbar { flex-wrap:wrap; gap:14px; } .zot-onboarding .top-note { display:none; } }
