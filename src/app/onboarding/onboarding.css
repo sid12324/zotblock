@@ -5,7 +5,7 @@
           margin: 0;
           font-family: 'DM Sans', sans-serif;
           color: #263b59;
-          background: #f7f8fc;
+          background: transparent;
         }
 
         .zot-onboarding button, .zot-onboarding input, .zot-onboarding select { font: inherit; }
@@ -15,10 +15,7 @@
           min-height: 100vh;
           display: flex;
           flex-direction: column;
-          background:
-            radial-gradient(ellipse at 8% 12%, #e9efff 0, transparent 32%),
-            radial-gradient(ellipse at 92% 88%, #fff0df 0, transparent 28%),
-            #f8f9fc;
+          background: transparent;
         }
 
         .zot-onboarding .topbar {

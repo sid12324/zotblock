@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import Link from "next/link";
+import { SiteHeader } from "@/components/site-header";
 import { useRouter } from "next/navigation";
 import { useStudyPreferences } from "@/components/preferences-provider";
 import { defaultOnboardingAnswers, onboardingAnswersSchema, preferencesFromOnboarding } from "@/lib/preferences";
@@ -200,20 +200,7 @@ function OnboardingForm({ initialPreferences, completed, savePreferences, storag
     <div className="zot-onboarding"><div className="app">
 
 
-      <header className="topbar">
-        <Link href="/" className="brand" aria-label="ZotBlock home">
-          <div className="brand-icon">Z</div>
-          ZotBlock
-        </Link>
-        <nav className="onboarding-links" aria-label="App navigation"><Link href="/integrations">Integrations</Link><Link href="/calendar">Calendar</Link></nav>
-        <div className="top-note">
-          {isWelcome
-            ? "Your semester starts here"
-            : isComplete
-            ? "Setup complete"
-            : "Let's build your routine"}
-        </div>
-      </header>
+      <SiteHeader active="onboarding"/>
 
       <main className="main">
         {isWelcome && (

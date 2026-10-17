@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Schibsted+Grotesk:wght@500;600;700&display=swap');
 
 /* Calendar layout and visual language ported from Sid's zotblock calendar. */
-.zot-calendar { color:#111; background:#fff; font-family:"Schibsted Grotesk",sans-serif; font-synthesis:none; text-rendering:optimizeLegibility; height:100dvh; min-height:640px; }
+.zot-calendar { color:#263b59; background:transparent; font-family:"DM Sans",sans-serif; font-synthesis:none; text-rendering:optimizeLegibility; height:100dvh; min-height:640px; display:flex; flex-direction:column; }
 .zot-calendar * { box-sizing: border-box; }
 
 .zot-calendar button,
@@ -543,3 +543,63 @@
   .zot-calendar .compact-export .google-calendar-export { width:100%; }
   .zot-calendar .calendar-export-scope select { font-size:16px; }
 }
+
+/* Blue theme shared with onboarding. Structural rules above keep their layout. */
+.zot-calendar .app { flex:1; min-height:0; height:auto; background:#fff; }
+.zot-calendar .mast h1,
+.zot-calendar .calendar-empty h1 { font-family:"Manrope","DM Sans",sans-serif; color:#19345c; }
+.zot-calendar .mast p,
+.zot-calendar .dow span,
+.zot-calendar .label,
+.zot-calendar .panel-head span,
+.zot-calendar .when,
+.zot-calendar .note,
+.zot-calendar .subtitle,
+.zot-calendar .calendar-empty>p:not(.label) { color:#65748c; }
+.zot-calendar .nav button,
+.zot-calendar .switch,
+.zot-calendar .dow,
+.zot-calendar .panel,
+.zot-calendar .time-grid-heading,
+.zot-calendar .time-grid-rail { border-color:#d5deee; }
+.zot-calendar .nav svg,
+.zot-calendar .panel-head svg { stroke:#254c83; }
+.zot-calendar .switch button.on,
+.zot-calendar .canvas-btn,
+.zot-calendar .today-num,
+.zot-calendar .today-block { background:#254c83; color:#fff; }
+.zot-calendar .canvas-btn { border-radius:11px; }
+.zot-calendar .canvas-btn:hover { background:#193b6d; }
+.zot-calendar .canvas-btn svg { stroke:#dce7ff; }
+.zot-calendar .date-number.today-num:hover { background:#193b6d; }
+.zot-calendar .today-button:hover,
+.zot-calendar .nav button,
+.zot-calendar .switch { border-color:#c5d2e6; }
+.zot-calendar .chip,
+.zot-calendar .rail-event,
+.zot-calendar .time-event { border-left-color:#315a94; }
+.zot-calendar .chip.study,
+.zot-calendar .calendar-legend .study-key { border-left-color:#315a94; background:#315a94; }
+.zot-calendar .chip.study { background:transparent; }
+.zot-calendar .chip.due,
+.zot-calendar .rail-event.due { border-left-color:#c8102e; }
+.zot-calendar .rail-event.due { background:#fff5f5; }
+.zot-calendar .time-event.study { background:#eef3ff; border-color:#c5d4ee; border-left-color:#315a94; }
+.zot-calendar .chip.selected,
+.zot-calendar .rail-event.selected,
+.zot-calendar .time-event.selected { background:#eef3ff; color:#19345c; border-color:#8ca7d1; border-left-color:#254c83; }
+.zot-calendar .estimate-bar,
+.zot-calendar .empty-mark { background:#254c83; }
+.zot-calendar .calendar-legend .sample-plan-label { background:#eef3ff; color:#254c83; }
+.zot-calendar .calendar-legend i { background:#8ca7d1; }
+.zot-calendar .calendar-legend .study-key { background:#315a94; }
+.zot-calendar .calendar-legend .due-key { background:#c8102e; }
+.zot-calendar .time-day-track.is-today { background-color:#f7f9fd; }
+.zot-calendar .time-event.ongoing { box-shadow:inset 0 0 0 1px #315a94; }
+.zot-calendar .calendar-warnings,
+.zot-calendar .calendar-storage-note { background:#f7f9fd; color:#52627b; border-color:#e4e9f2; }
+.zot-calendar .calendar-export-authorization a { border-color:#8ca7d1; background:#eef3ff; color:#19345c; }
+.zot-calendar button:focus-visible,
+.zot-calendar a:focus-visible,
+.zot-calendar input:focus-visible { outline-color:#315a94; }
+@media(max-width:900px) { .zot-calendar .app { height:auto; flex:1; min-height:0; } }

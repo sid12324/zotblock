@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { SiteHeader } from "@/components/site-header";
 import { useState, type FormEvent } from "react";
 import type { useFocusTimer } from "@/components/focus-timer-provider";
 
@@ -77,7 +78,7 @@ export function FocusExperience({ timer, timeZone }: { timer: FocusTimerControll
     setError(null);
   }
 
-  return <div className="zot-focus"><header className="focus-header"><Link href="/calendar" className="focus-brand" aria-label="ZotBlock calendar"><span aria-hidden="true"/>ZOTBLOCK</Link><span className="focus-header-label">A LITTLE SPACE TO FOCUS</span><Link href="/calendar" className="focus-exit"><span>{active ? "Exit focus" : "Back to calendar"}</span><Arrow/></Link></header>
+  return <div className="zot-focus"><SiteHeader active="calendar"/>
     <main className="focus-main">{!timer.ready ? <div className="focus-loading" role="status"><span className="focus-eyebrow">FOCUS MODE</span><h1>Making a little <em>space.</em></h1><p>Loading your session…</p></div> : <>
       <div className="focus-heading"><p className="focus-eyebrow">{session?.target.course || (completed ? "A LITTLE PROGRESS, WELL EARNED" : "YOUR TIME, WELL SPENT")}</p><h1>{completed ? <>That’s a <em>wrap.</em></> : session ? session.target.title : <>One thing at a <em>time.</em></>}</h1>{completed && <p className="focus-task-finished">{session.target.title}</p>}<p className="focus-session-status" role="status">{completed ? "Session complete. Your focus time and streak have been credited." : active ? session.status === "paused" ? "Session paused." : "Session in progress." : ended ? "Session ended. Only completed sessions count toward your streak." : "Choose a little time. Give it your full attention."}</p></div>
       <FocusRing seconds={displaySeconds} totalSeconds={session ? session.durationMs / 1000 : (selectedMinutes ?? 25) * 60} status={status}/>

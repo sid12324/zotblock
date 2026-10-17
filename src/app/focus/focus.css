@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap');
 
-.zot-focus { --focus-ink:#161614; --focus-muted:#7c7b73; --focus-line:#e8e7df; --focus-yellow:#f5c400; min-height:100dvh; color:var(--focus-ink); background:#fdfdf9; font-family:"Schibsted Grotesk",Arial,sans-serif; font-synthesis:none; display:flex; flex-direction:column; }
+.zot-focus { --focus-ink:#19345c; --focus-muted:#7b879b; --focus-line:#e4e9f2; --focus-yellow:#254c83; min-height:100dvh; color:var(--focus-ink); background:transparent; font-family:"DM Sans",Arial,sans-serif; font-synthesis:none; display:flex; flex-direction:column; }
 .zot-focus * { box-sizing:border-box; }
 .zot-focus button,.zot-focus input { font:inherit; color:inherit; }
 .zot-focus button { cursor:pointer; }
@@ -15,7 +15,7 @@
 .zot-focus .focus-main { flex:1; width:100%; max-width:900px; margin:0 auto; padding:48px 24px 38px; display:flex; flex-direction:column; align-items:center; }
 .zot-focus .focus-heading { width:100%; max-width:680px; text-align:center; }
 .zot-focus .focus-eyebrow { margin:0 0 13px; font-size:10px; font-weight:500; letter-spacing:.16em; line-height:1.6; color:var(--focus-muted); overflow-wrap:anywhere; }
-.zot-focus h1 { margin:0; font:500 clamp(30px,4vw,46px)/1.15 "Schibsted Grotesk",Arial,sans-serif; letter-spacing:-1.8px; overflow-wrap:anywhere; text-wrap:balance; }
+.zot-focus h1 { margin:0; font:650 clamp(30px,4vw,46px)/1.15 "Manrope","DM Sans",Arial,sans-serif; letter-spacing:-1.8px; overflow-wrap:anywhere; text-wrap:balance; color:#19345c; }
 .zot-focus h1 em { font-family:"Newsreader",Georgia,serif; font-weight:400; font-size:1.15em; }
 .zot-focus .focus-session-status { margin:15px 0 0; color:var(--focus-muted); font-size:12px; line-height:1.7; }
 .zot-focus .focus-task-finished { margin:13px 0 0; color:#525149; font-size:15px; line-height:1.5; overflow-wrap:anywhere; }
@@ -23,7 +23,7 @@
 .zot-focus .focus-ring-art { position:absolute; inset:0; width:100%; height:100%; overflow:visible; transform:rotate(-90deg); }
 .zot-focus .focus-ring-track { stroke:var(--focus-line); stroke-width:2; }
 .zot-focus .focus-ring-progress { stroke:var(--focus-yellow); stroke-width:5; stroke-linecap:round; transition:stroke-dashoffset .8s linear; }
-.zot-focus .focus-ring-paused .focus-ring-progress { stroke:#c5bb8d; }
+.zot-focus .focus-ring-paused .focus-ring-progress { stroke:#8ca7d1; }
 .zot-focus .focus-ring-content { position:absolute; inset:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; text-align:center; }
 .zot-focus .focus-ring-label { color:var(--focus-muted); letter-spacing:.16em; font-size:9px; font-weight:500; }
 .zot-focus .focus-countdown { font-size:clamp(54px,10vw,84px); font-weight:500; letter-spacing:-5px; font-variant-numeric:tabular-nums; line-height:1.2; }
@@ -32,7 +32,7 @@
 .zot-focus .focus-main-actions,.zot-focus .focus-next-actions { display:flex; gap:10px; justify-content:center; }
 .zot-focus .focus-primary,.zot-focus .focus-secondary { border:1px solid var(--focus-ink); border-radius:4px; min-height:48px; padding:0 22px; display:inline-flex; align-items:center; justify-content:center; gap:11px; font-size:12px; font-weight:500; white-space:nowrap; transition:background .15s,color .15s; }
 .zot-focus .focus-primary { background:var(--focus-ink); color:#fff; }
-.zot-focus .focus-primary:hover { background:#34342d; }
+.zot-focus .focus-primary:hover { background:#193b6d; }
 .zot-focus .focus-primary svg { width:18px; height:18px; }
 .zot-focus .focus-secondary { background:transparent; border-color:#dad9d0; }
 .zot-focus .focus-secondary:hover { background:#f0efe8; }
@@ -67,7 +67,7 @@
 .zot-focus .focus-credit svg { width:16px; height:16px; }
 .zot-focus .focus-streak { display:flex; justify-content:space-between; align-items:center; gap:32px; width:100%; max-width:440px; margin-top:38px; padding-top:23px; border-top:1px solid var(--focus-line); }
 .zot-focus .focus-streak-copy { display:flex; align-items:center; gap:11px; }
-.zot-focus .focus-streak-symbol { color:#ac8b00; font-size:29px; font-family:Georgia,serif; }
+.zot-focus .focus-streak-symbol { color:#5276ad; font-size:29px; font-family:Georgia,serif; }
 .zot-focus .focus-streak-copy p { margin:0 0 4px; font-size:12px; white-space:nowrap; }
 .zot-focus .focus-streak-copy strong { font-weight:600; }
 .zot-focus .focus-streak-copy p>small { margin-left:7px; font-size:9px; font-weight:400; color:var(--focus-muted); }
