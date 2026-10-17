@@ -2,6 +2,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { SAMPLE_EVENTS } from './sampleData.js'
 import { loadAssignment, syncCanvas } from './canvasApi.js'
 import {
+  dayTitle,
+  formatISO,
+  minutesFromClock,
+  parseISODate,
   monthName,
   monthWeeks,
   sameDay,
@@ -16,6 +20,17 @@ import {
 import './styles.css'
 
 const STORAGE_KEY = 'zotblock.canvas'
+const CUSTOM_KEY = 'zotblock.events'
+
+function loadCustomEvents() {
+  try {
+    const raw = localStorage.getItem(CUSTOM_KEY)
+    const parsed = raw ? JSON.parse(raw) : []
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
 
 function loadConnection() {
   try {
@@ -83,9 +98,14 @@ export default function App() {
   const [syncError, setSyncError] = useState('')
   const [syncedAt, setSyncedAt] = useState(null)
   const [connectOpen, setConnectOpen] = useState(false)
+  const [addOpen, setAddOpen] = useState(false)
+  const [customEvents, setCustomEvents] = useState(loadCustomEvents)
 
   const range = useMemo(() => visibleRange(cursor, view), [cursor, view])
-  const events = source === 'canvas' ? canvasEvents : SAMPLE_EVENTS
+  const events = useMemo(() => {
+    const base = source === 'canvas' ? canvasEvents : SAMPLE_EVENTS
+    return [...base, ...customEvents]
+  }, [source, canvasEvents, customEvents])
   const selected = events.find((event) => event.id === selectedId) || null
 
   useEffect(() => {
@@ -103,7 +123,7 @@ export default function App() {
         setConnectOpen(false)
         localStorage.setItem(STORAGE_KEY, JSON.stringify(connection))
         setSelectedId((current) => {
-          if (nextEvents.some((event) => event.id === current)) return current
+          if (String(current).startsWith('custom-') || nextEvents.some((event) => event.id === current)) return current
           return nextEvents[0]?.id ?? null
         })
         if (nextEvents.length === 0) setPanelOpen(false)
@@ -140,18 +160,31 @@ export default function App() {
   }, [selected, connection])
 
   useEffect(() => {
+    localStorage.setItem(CUSTOM_KEY, JSON.stringify(customEvents))
+  }, [customEvents])
+
+  useEffect(() => {
     function onKey(event) {
       if (event.key !== 'Escape') return
-      if (connectOpen) setConnectOpen(false)
+      if (addOpen) setAddOpen(false)
+      else if (connectOpen) setConnectOpen(false)
       else setPanelOpen(false)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [connectOpen])
+  }, [addOpen, connectOpen])
 
   function selectEvent(id) {
     setSelectedId(id)
     setPanelOpen(true)
+  }
+
+  function addEvent(event) {
+    setCustomEvents((current) => [...current, event])
+    setCursor(parseISODate(event.date))
+    setSelectedId(event.id)
+    setPanelOpen(true)
+    setAddOpen(false)
   }
 
   function disconnect() {
@@ -186,24 +219,31 @@ export default function App() {
 
         <div className="mast">
           <div className="mast-title">
-            {view === 'month' ? (
+            {view === 'month' && (
               <>
                 <h1>{monthName(cursor)}</h1>
                 <p>{cursor.getFullYear()}</p>
               </>
-            ) : (
+            )}
+            {view === 'week' && (
               <>
                 <h1>{weekTitle(cursor).primary}</h1>
                 <p>{weekTitle(cursor).secondary}</p>
               </>
             )}
+            {view === 'day' && (
+              <>
+                <h1>{dayTitle(cursor).primary}</h1>
+                <p>{dayTitle(cursor).secondary}</p>
+              </>
+            )}
           </div>
           <div className="mast-actions">
             <div className="nav">
-              <button type="button" aria-label={view === 'month' ? 'Previous month' : 'Previous week'} onClick={() => setCursor(shiftCursor(cursor, view, -1))}>
+              <button type="button" aria-label={stepLabel(view, 'Previous')} onClick={() => setCursor(shiftCursor(cursor, view, -1))}>
                 <Chevron direction="left" />
               </button>
-              <button type="button" aria-label={view === 'month' ? 'Next month' : 'Next week'} onClick={() => setCursor(shiftCursor(cursor, view, 1))}>
+              <button type="button" aria-label={stepLabel(view, 'Next')} onClick={() => setCursor(shiftCursor(cursor, view, 1))}>
                 <Chevron direction="right" />
               </button>
             </div>
@@ -214,11 +254,19 @@ export default function App() {
               <button type="button" aria-pressed={view === 'week'} className={view === 'week' ? 'on' : ''} onClick={() => setView('week')}>
                 Week
               </button>
+              <button type="button" aria-pressed={view === 'day'} className={view === 'day' ? 'on' : ''} onClick={() => setView('day')}>
+                Day
+              </button>
             </div>
+            <button className="add-btn" type="button" aria-label="Add event" onClick={() => setAddOpen(true)}>
+              <svg viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M8 3V13M3 8H13" />
+              </svg>
+            </button>
           </div>
         </div>
 
-        {view === 'month' ? (
+        {view === 'month' && (
           <MonthView
             cursor={cursor}
             today={today}
@@ -230,10 +278,19 @@ export default function App() {
               setView('week')
             }}
           />
-        ) : (
+        )}
+        {view === 'week' && (
           <WeekView
             cursor={cursor}
             today={today}
+            events={events}
+            selectedId={panelOpen ? selectedId : null}
+            onSelect={selectEvent}
+          />
+        )}
+        {view === 'day' && (
+          <DayView
+            cursor={cursor}
             events={events}
             selectedId={panelOpen ? selectedId : null}
             onSelect={selectEvent}
@@ -246,6 +303,14 @@ export default function App() {
           event={selected}
           today={today}
           onClose={() => setPanelOpen(false)}
+        />
+      )}
+
+      {addOpen && (
+        <AddDialog
+          date={formatISO(cursor)}
+          onClose={() => setAddOpen(false)}
+          onAdd={addEvent}
         />
       )}
 
@@ -265,6 +330,19 @@ export default function App() {
       )}
     </div>
   )
+}
+
+function courseLine(event) {
+  const parts = [event.courseCode, event.courseName].filter(Boolean)
+  const unique = parts.filter((value, index) => (
+    parts.findIndex((item) => item.toLowerCase() === value.toLowerCase()) === index
+  ))
+  return unique.join(' · ').toUpperCase()
+}
+
+function stepLabel(view, direction) {
+  const unit = view === 'month' ? 'month' : view === 'week' ? 'week' : 'day'
+  return `${direction} ${unit}`
 }
 
 function statusLabel(source, syncState, syncedAt) {
@@ -390,6 +468,133 @@ function eventTop(minutes) {
   return ((clamped - start) / (end - start)) * 78
 }
 
+function DayView({ cursor, events, selectedId, onSelect }) {
+  const iso = formatISO(cursor)
+  const dayEvents = events
+    .filter((event) => event.date === iso)
+    .sort((a, b) => (a.startMinutes ?? 24 * 60) - (b.startMinutes ?? 24 * 60))
+  return (
+    <div className="day-agenda">
+      <p className="day-kicker">{monthName(cursor)}</p>
+      {dayEvents.length === 0 && <p className="day-empty">Nothing on this day.</p>}
+      {dayEvents.map((event) => (
+        <button
+          key={event.id}
+          type="button"
+          className={`agenda-row ${event.kind === 'due' ? 'due' : ''} ${event.id === selectedId ? 'selected' : ''}`}
+          onClick={() => onSelect(event.id)}
+        >
+          <em>{event.timeLabel || 'All day'}</em>
+          <span>
+            <strong>{event.shortLabel}</strong>
+            {event.courseName && event.courseName !== event.courseCode && <small>{event.courseName}</small>}
+          </span>
+        </button>
+      ))}
+    </div>
+  )
+}
+
+function clockLabel(value) {
+  if (!value) return ''
+  const [hours, minutes] = value.split(':').map(Number)
+  const date = new Date()
+  date.setHours(hours, minutes, 0, 0)
+  return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }).toLowerCase()
+}
+
+function AddDialog({ date, onClose, onAdd }) {
+  const [title, setTitle] = useState('')
+  const [eventDate, setEventDate] = useState(date)
+  const [start, setStart] = useState('')
+  const [end, setEnd] = useState('')
+  const [course, setCourse] = useState('')
+  const [notes, setNotes] = useState('')
+  const [kind, setKind] = useState('class')
+
+  function submit(event) {
+    event.preventDefault()
+    const trimmed = title.trim()
+    if (!trimmed || !eventDate) return
+    const startLabel = clockLabel(start)
+    const endLabel = clockLabel(end)
+    const timeLabel = kind === 'due' && !start
+      ? '11:59 pm'
+      : startLabel && endLabel
+        ? `${startLabel.replace(/\s?(am|pm)$/i, '')}–${endLabel}`
+        : startLabel
+    const startMinutes = start ? minutesFromClock(startLabel) : null
+    const endMinutes = end ? minutesFromClock(endLabel) : null
+    const span = startMinutes != null && endMinutes != null && endMinutes > startMinutes
+      ? endMinutes - startMinutes
+      : kind === 'due' ? 90 : 60
+    const hours = Math.floor(span / 60)
+    const mins = span % 60
+    onAdd({
+      id: `custom-${crypto.randomUUID()}`,
+      kind,
+      courseCode: course.trim(),
+      courseName: '',
+      title: trimmed,
+      shortLabel: course.trim() ? `${course.trim()} ${trimmed}` : trimmed,
+      date: eventDate,
+      timeLabel,
+      startMinutes,
+      estimate: `${hours}:${String(mins).padStart(2, '0')}`,
+      estimateNote: 'hours · you added this',
+      description: notes.trim() || 'You added this event.',
+      summary: notes.trim() || 'This stays on the calendar in this browser, alongside anything synced from Canvas.',
+      resources: [],
+      custom: true,
+    })
+  }
+
+  return (
+    <div className="backdrop" role="presentation" onMouseDown={onClose}>
+      <form className="dialog" onMouseDown={(event) => event.stopPropagation()} onSubmit={submit}>
+        <p className="label">New event</p>
+        <h2>Add to the calendar</h2>
+        <label>
+          Title
+          <input value={title} onChange={(event) => setTitle(event.target.value)} autoFocus required />
+        </label>
+        <div className="field-row">
+          <label>
+            Date
+            <input type="date" value={eventDate} onChange={(event) => setEventDate(event.target.value)} required />
+          </label>
+          <label>
+            Starts
+            <input type="time" value={start} onChange={(event) => setStart(event.target.value)} />
+          </label>
+          <label>
+            Ends
+            <input type="time" value={end} onChange={(event) => setEnd(event.target.value)} />
+          </label>
+        </div>
+        <label>
+          Course
+          <input value={course} onChange={(event) => setCourse(event.target.value)} placeholder="CS 161" />
+        </label>
+        <div className="kind-switch" role="group" aria-label="Event type">
+          <button type="button" className={kind === 'class' ? 'on' : ''} onClick={() => setKind('class')}>Class</button>
+          <button type="button" className={kind === 'due' ? 'on' : ''} onClick={() => setKind('due')}>Due</button>
+        </div>
+        <label>
+          Notes
+          <textarea value={notes} onChange={(event) => setNotes(event.target.value)} rows={3} />
+        </label>
+        <div className="dialog-actions">
+          <button className="canvas-btn" type="submit" disabled={!title.trim()}>
+            Add event
+          </button>
+          <button className="text-btn" type="button" onClick={onClose}>Cancel</button>
+        </div>
+      </form>
+    </div>
+  )
+}
+
 function DetailPanel({ event, today, onClose }) {
   const loading = event.needsDetail && !event.description
   return (
@@ -403,7 +608,7 @@ function DetailPanel({ event, today, onClose }) {
         </button>
       </div>
       <div className="panel-scroll">
-        <p className="course">{[event.courseCode, event.courseName].filter(Boolean).join(' · ').toUpperCase()}</p>
+        <p className="course">{courseLine(event)}</p>
         <p className="when">{whenLine(event, today)}</p>
         <h2>{event.title}</h2>
         {event.subtitle && <p className="subtitle">{event.subtitle}</p>}

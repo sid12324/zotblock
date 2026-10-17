@@ -81,8 +81,19 @@ export function weekTitle(date) {
   }
 }
 
+export function dayTitle(date) {
+  return {
+    primary: String(date.getDate()),
+    secondary: date.toLocaleDateString('en-US', { weekday: 'long' }),
+  }
+}
+
 export function shiftCursor(date, view, direction) {
   const next = new Date(date)
+  if (view === 'day') {
+    next.setDate(next.getDate() + direction)
+    return next
+  }
   if (view === 'week') {
     next.setDate(next.getDate() + direction * 7)
     return next
@@ -92,6 +103,10 @@ export function shiftCursor(date, view, direction) {
 }
 
 export function visibleRange(date, view) {
+  if (view === 'day') {
+    const iso = formatISO(date)
+    return { start: iso, end: iso }
+  }
   if (view === 'week') {
     const start = startOfWeek(date)
     const end = addDays(start, 6)
