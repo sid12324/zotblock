@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { SiteHeader } from "@/components/site-header";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useStudyPreferences } from "@/components/preferences-provider";
 import { defaultOnboardingAnswers, onboardingAnswersSchema, preferencesFromOnboarding } from "@/lib/preferences";
@@ -12,8 +12,8 @@ import "./onboarding.css";
 const questions = [
   {
     id: "nameMajor",
-    title: "Let's get to know you.",
-    helper: "We'll personalize your semester around you.",
+    title: "Build your study rhythm",
+    helper: "A few quick questions help ZotBlock fit your real life.",
     type: "profile",
   },
   {
@@ -51,6 +51,17 @@ const questions = [
 const initialAnswers = defaultOnboardingAnswers;
 
 const focusOptions = ["Morning", "Afternoon", "Evening", "Night"] as const;
+const presetMajors = ["Data Science", "Economics", "Computer Engineering"] as const;
+
+function MajorGlyph({ name }: { name: "chart" | "trend" | "chip" | "more" }) {
+  const paths = {
+    chart: "M5 19V9M12 19V5M19 19v-6",
+    trend: "M4 16l5-5 3 3 8-8M14 6h6v6",
+    chip: "M9 9h6v6H9zM9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3",
+    more: "M6 12h.01M12 12h.01M18 12h.01",
+  };
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d={paths[name]} /></svg>;
+}
 
 function formatTime(time: string) {
   if (!time) return "Not selected";
@@ -142,6 +153,7 @@ function OnboardingForm({ initialPreferences, completed, savePreferences, storag
     return saved.success ? saved.data : { ...initialAnswers };
   });
   const [formError, setFormError] = useState<string | null>(null);
+  const [majorChoice, setMajorChoice] = useState(() => presetMajors.includes(answers.major as typeof presetMajors[number]) ? answers.major : answers.major ? "Other" : "");
   const headingRef = useRef<HTMLHeadingElement>(null);
   useEffect(() => { headingRef.current?.focus(); }, [screen]);
 
@@ -184,11 +196,13 @@ function OnboardingForm({ initialPreferences, completed, savePreferences, storag
     ? validStudyHours
     : true;
 
-  const progress = isComplete
-    ? 100
-    : isWelcome
-    ? 0
-    : ((screen + 1) / questions.length) * 100;
+  const saveAndExit = () => {
+    const parsed = onboardingAnswersSchema.safeParse(answers);
+    if (parsed.success) {
+      try { savePreferences(preferencesFromOnboarding(parsed.data, initialPreferences)); } catch { /* Leave with the last saved preferences. */ }
+    }
+    router.push("/calendar");
+  };
 
   const reset = () => {
     setFormError(null);
@@ -198,9 +212,14 @@ function OnboardingForm({ initialPreferences, completed, savePreferences, storag
 
   return (
     <div className="zot-onboarding"><div className="app">
-
-
-      <SiteHeader active="onboarding"/>
+      <header className="pref-top">
+        <Link href="/" className="brand" aria-label="ZotBlock home">
+          <img src="/zotblock-mark.png" alt="" />
+          <span>ZotBlock</span>
+        </Link>
+        {!isWelcome && !isComplete && <div className="pref-status"><span>{screen + 1} of {questions.length}</span><div className="segments" role="progressbar" aria-label="Setup progress" aria-valuemin={1} aria-valuemax={questions.length} aria-valuenow={screen + 1} aria-valuetext={`Question ${screen + 1} of ${questions.length}`}>{questions.map((item, index) => <i key={item.id} className={index <= screen ? "is-on" : ""} />)}</div></div>}
+        <button type="button" className="save-exit" onClick={saveAndExit}>Save and exit</button>
+      </header>
 
       <main className="main">
         {isWelcome && (
@@ -238,48 +257,47 @@ function OnboardingForm({ initialPreferences, completed, savePreferences, storag
 
         {!isWelcome && !isComplete && (
           <form className="card" key={question.id} aria-labelledby="onboarding-step-title" onSubmit={(event) => { event.preventDefault(); if (canContinue) next(); }}>
-            <div className="progress-section">
-              <div className="progress-meta">
-                <span>QUESTION {screen + 1} OF {questions.length}</span>
-                <span>{Math.round(progress)}% COMPLETE</span>
+            <div className={question.type === "profile" ? "rhythm-head" : ""}>
+              <div>
+                <div className="eyebrow">Let’s personalize your semester</div>
+                <h2 id="onboarding-step-title" ref={headingRef} tabIndex={-1}>{question.title}</h2>
+                <p className="helper">{question.helper}</p>
               </div>
-              <div className="progress-track" role="progressbar" aria-label="Setup progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress)} aria-valuetext={`Question ${screen + 1} of ${questions.length}`}>
-                <div
-                  className="progress-fill"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
+              {question.type === "profile" && <img src="/zotblock-mark.png" alt="" className="rhythm-mark" />}
             </div>
-
-            <div className="eyebrow">Let’s make it yours</div>
-            <h2 id="onboarding-step-title" ref={headingRef} tabIndex={-1}>{question.title}</h2>
-            <p className="helper">{question.helper}</p>
 
             {question.type === "profile" && (
               <>
                 <label className="field">
-                  <span className="field-label">Your name</span>
-                  <input
-                    maxLength={100}
-                    required
-                    type="text"
-                    placeholder="e.g. Alex Johnson"
-                    value={answers.name}
-                    onChange={(e) => update("name", e.target.value)}
-                    autoComplete="name"
-                  />
+                  <span className="field-label">What should we call you?</span>
+                  <span className="icon-input">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.2" /><path d="M5.5 19.2c1.2-3 3.5-4.5 6.5-4.5s5.3 1.5 6.5 4.5" /></svg>
+                    <input
+                      maxLength={100}
+                      required
+                      type="text"
+                      placeholder="Enter your name"
+                      value={answers.name}
+                      onChange={(e) => update("name", e.target.value)}
+                      autoComplete="name"
+                    />
+                  </span>
                 </label>
-                <label className="field">
-                  <span className="field-label">Your major</span>
-                  <input
-                    maxLength={160}
-                    required
-                    type="text"
-                    placeholder="e.g. Economics"
-                    value={answers.major}
-                    onChange={(e) => update("major", e.target.value)}
-                  />
-                </label>
+                <fieldset className="major-set">
+                  <legend>What’s your major?</legend>
+                  <div className="major-grid">
+                    {([
+                      ["Data Science", "chart"],
+                      ["Economics", "trend"],
+                      ["Computer Engineering", "chip"],
+                      ["Other", "more"],
+                    ] as const).map(([value, icon]) => {
+                      const selected = majorChoice === value;
+                      return <button key={value} type="button" className={selected ? "major-option is-selected" : "major-option"} aria-pressed={selected} onClick={() => { setMajorChoice(value); if (value !== "Other") update("major", value); else if (presetMajors.includes(answers.major as typeof presetMajors[number])) update("major", ""); }}><span className="major-icon"><MajorGlyph name={icon} /></span><span>{value}</span><span className="major-radio" aria-hidden="true">{selected ? "✓" : ""}</span></button>;
+                    })}
+                  </div>
+                  {majorChoice === "Other" && <input className="other-major" maxLength={160} required type="text" placeholder="Enter your major" value={answers.major} onChange={(e) => update("major", e.target.value)} />}
+                </fieldset>
               </>
             )}
 
@@ -420,7 +438,7 @@ function OnboardingForm({ initialPreferences, completed, savePreferences, storag
               >
                 {screen === questions.length - 1
                   ? "Finish setup"
-                  : "Next →"}
+                  : "Continue →"}
               </button>
             </div>
           </form>

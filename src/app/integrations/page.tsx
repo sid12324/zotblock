@@ -158,7 +158,7 @@ export default function IntegrationsPage() {
   }
 
   return (
-    <AppShell active="integrations">
+    <AppShell active="integrations" backdrop>
       <main className="main-content">
         <section className="page-heading">
           <div className="eyebrow"><span className="eyebrow-line"/>YOUR TIME, A LITTLE MORE INTENTIONAL</div>

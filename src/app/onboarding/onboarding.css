@@ -315,4 +315,42 @@
 .zot-onboarding .summary-row span { min-width:0; }
 @media(max-width:600px) { .zot-onboarding .field input,.zot-onboarding .field select { font-size:16px; } .zot-onboarding .progress-meta { gap:12px; font-size:10px; } .zot-onboarding .slider-heading { flex-wrap:wrap; } }
 @media(prefers-reduced-motion:reduce) { .zot-onboarding .card { animation:none; } .zot-onboarding .primary,.zot-onboarding .progress-fill { transition:none; } .zot-onboarding .primary:hover { transform:none; } }
+
+.zot-onboarding { min-height:100vh; background:#eef4fb; }
+.zot-onboarding .app { position:relative; overflow:hidden; background:radial-gradient(circle at 8% 12%, #ffffff 0 18%, transparent 19%), radial-gradient(circle at 92% 8%, #d7e7ff 0 16%, transparent 17%), radial-gradient(circle at 96% 88%, #d5e6ff 0 22%, transparent 23%), #eef4fb; }
+.zot-onboarding .pref-top { position:relative; z-index:1; display:flex; align-items:center; justify-content:space-between; gap:24px; padding:22px 6% 8px; }
+.zot-onboarding .brand { display:flex; align-items:center; gap:10px; color:#1d355f; font:800 26px Manrope, "DM Sans", sans-serif; letter-spacing:-1px; }
+.zot-onboarding .brand img { height:52px; width:auto; }
+.zot-onboarding .pref-status { display:flex; align-items:center; gap:14px; margin-left:auto; color:#6d7d96; font-size:14px; font-weight:650; }
+.zot-onboarding .segments { display:flex; gap:7px; }
+.zot-onboarding .segments i { width:28px; height:6px; border-radius:99px; background:#d5deea; }
+.zot-onboarding .segments i.is-on { background:#2f6fed; }
+.zot-onboarding .save-exit { border:0; background:transparent; color:#6d7d96; font-size:14px; font-weight:650; }
+.zot-onboarding .save-exit:hover { color:#1d355f; }
+.zot-onboarding .card { position:relative; z-index:1; max-width:760px; padding:36px 40px 28px; border:0; border-radius:28px; box-shadow:0 24px 70px #1d355f14; }
+.zot-onboarding .eyebrow { width:fit-content; margin-bottom:16px; padding:6px 10px; border-radius:99px; background:#e7f0ff; color:#4d74b5; letter-spacing:.8px; font-size:10px; }
+.zot-onboarding h2 { font-size:clamp(32px, 4vw, 42px); letter-spacing:-1.4px; color:#1c315c; }
+.zot-onboarding .helper { max-width:420px; margin-bottom:8px; color:#7d8da6; }
+.zot-onboarding .rhythm-head { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; }
+.zot-onboarding .rhythm-mark { width:118px; height:auto; flex-shrink:0; margin-top:8px; filter:drop-shadow(0 10px 16px #2f6fed22); }
+.zot-onboarding .field-label, .zot-onboarding .major-set legend { color:#1c315c; font-size:16px; font-weight:750; }
+.zot-onboarding .icon-input { display:flex; align-items:center; gap:10px; min-height:52px; padding:0 14px; border:1px solid #e3ebf5; border-radius:14px; background:#fff; }
+.zot-onboarding .icon-input svg { width:18px; height:18px; flex-shrink:0; fill:none; stroke:#8ea0b8; stroke-width:1.7; }
+.zot-onboarding .field .icon-input input { width:auto; flex:1; min-width:0; min-height:48px; border:0; background:transparent; padding:0; box-shadow:none; }
+.zot-onboarding .icon-input:focus-within { border-color:#2f6fed; box-shadow:0 0 0 4px #2f6fed18; }
+.zot-onboarding .major-set { margin:8px 0 0; padding:0; border:0; }
+.zot-onboarding .major-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.zot-onboarding .major-option { display:flex; align-items:center; gap:12px; min-height:64px; padding:12px 14px; border:1px solid #e3ebf5; border-radius:16px; background:#fff; color:#1c315c; font-weight:700; text-align:left; }
+.zot-onboarding .major-option:hover { border-color:#b9cff3; }
+.zot-onboarding .major-option.is-selected { border:1.5px solid #2f6fed; background:#f4f8ff; }
+.zot-onboarding .major-icon { display:grid; place-items:center; width:34px; height:34px; flex-shrink:0; border-radius:10px; background:#eef4ff; color:#2f6fed; }
+.zot-onboarding .major-icon svg { width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+.zot-onboarding .major-radio { width:22px; height:22px; margin-left:auto; display:grid; place-items:center; border:1.5px solid #d5deea; border-radius:50%; color:transparent; font-size:12px; }
+.zot-onboarding .major-option.is-selected .major-radio { border-color:#2f6fed; background:#2f6fed; color:#fff; }
+.zot-onboarding .other-major { width:100%; min-height:48px; margin-top:12px; padding:12px 14px; border:1px solid #e3ebf5; border-radius:14px; }
+.zot-onboarding .primary { border-radius:12px; background:#2f6fed; }
+.zot-onboarding .primary:hover { background:#1f5fe0; }
+.zot-onboarding .nav { border-top-color:#eef2f8; }
+.zot-onboarding .back { color:#5f7ea8; }
+@media(max-width:700px) { .zot-onboarding .pref-top { flex-wrap:wrap; padding:16px 18px 0; } .zot-onboarding .pref-status { order:3; width:100%; } .zot-onboarding .rhythm-head { flex-direction:column; } .zot-onboarding .rhythm-mark { width:84px; } .zot-onboarding .major-grid,.zot-onboarding .option-grid,.zot-onboarding .two-columns { grid-template-columns:1fr; } .zot-onboarding .card { padding:26px 18px 22px; } }
 @media(max-width:600px) { .zot-onboarding .topbar { flex-wrap:wrap; gap:14px; } .zot-onboarding .top-note { display:none; } }

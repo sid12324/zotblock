@@ -34,7 +34,7 @@ export function StartFocusButton({ event, timeZone, defaultMinutes = 25 }: { eve
   function start() {
     if (active || timer.startSession(target)) router.push("/focus");
   }
-  return <div className="panel-focus-action"><button type="button" className="calendar-focus-start" onClick={start} disabled={!timer.ready}><Play aria-hidden="true"/><span>{active ? "Return to focus" : "Start timer"}</span><span className="focus-start-duration">{active ? clock(timer.remainingSeconds) : `${target.durationMinutes} min`}</span></button></div>;
+  return <div className="panel-focus-action"><button type="button" className="calendar-focus-start" onClick={start} disabled={!timer.ready}><Play aria-hidden="true"/><span>{active ? "Return to focus" : "Start focus"}</span><span className="focus-start-duration">{active ? clock(timer.remainingSeconds) : `${target.durationMinutes} min`}</span></button></div>;
 }
 
 export function FocusTimerCard({ timeZone, defaultMinutes = 25 }: { timeZone: string; defaultMinutes?: number }) {

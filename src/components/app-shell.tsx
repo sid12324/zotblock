@@ -1,8 +1,8 @@
 import { SiteHeader, type SiteHeaderPage } from "@/components/site-header";
 
-export function AppShell({ active, children }: { active: SiteHeaderPage; children: React.ReactNode }) {
+export function AppShell({ active, children, backdrop = false }: { active: SiteHeaderPage; children: React.ReactNode; backdrop?: boolean }) {
   return (
-    <div className="app-frame">
+    <div className={backdrop ? "app-frame pref-backdrop" : "app-frame"}>
       <SiteHeader active={active}/>
       <div className="app-shell">
         {children}

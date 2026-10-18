@@ -5,6 +5,7 @@ import type { Assignment, AssignmentDetails, ProviderId, StudyPlan, StudyTask } 
 export type CalendarDisplayEvent = {
   id: string;
   kind: "study" | "class" | "due";
+  tone?: "study" | "class" | "life" | "build";
   completionKey?: string;
   title: string;
   shortLabel: string;
@@ -161,14 +162,14 @@ export function calendarEventsFromPlan(plan: StudyPlan): CalendarDisplayEvent[] 
   for (const block of plan.studyBlocks) {
     const work = works.get(workKey(block.source.provider, block.source.id, block.source.title, block.source.dueAt))!;
     for (const segment of intervalDays(block.start.dateTime, block.end.dateTime, plan.timeZone)) {
-      events.push({ ...segment, id: `study:${encodeURIComponent(block.id)}:${segment.date}`, completionKey: studyBlockCompletionKey(block), kind: "study", exportStart: block.start.dateTime, exportEnd: block.end.dateTime, title: block.summary, shortLabel: block.summary, allDay: false, courseCode: "", courseName: work.course, estimate: estimateLabel(segment.durationMinutes), estimateNote: "hours · scheduled study duration", description: work.provider === "canvas" ? work.description : block.description || work.description, assignmentDetails: work.details, assignment: work.assignment, summary: `Scheduled study time for ${work.title}. Deadline: ${deadlineLabel(work.dueAt, plan.timeZone)}.`, sourceProvider: work.provider, sourceLabel: work.provider === "canvas" ? "Canvas" : "Gmail", htmlUrl: work.url, dueAt: work.dueAt, resources: sourceResources(work), priority: block.priority });
+      events.push({ ...segment, id: `study:${encodeURIComponent(block.id)}:${segment.date}`, completionKey: studyBlockCompletionKey(block), kind: "study", tone: "study", exportStart: block.start.dateTime, exportEnd: block.end.dateTime, title: block.summary, shortLabel: block.summary, allDay: false, courseCode: "", courseName: work.course, estimate: estimateLabel(segment.durationMinutes), estimateNote: "hours · scheduled study duration", description: work.provider === "canvas" ? work.description : block.description || work.description, assignmentDetails: work.details, assignment: work.assignment, summary: `Scheduled study time for ${work.title}. Deadline: ${deadlineLabel(work.dueAt, plan.timeZone)}.`, sourceProvider: work.provider, sourceLabel: work.provider === "canvas" ? "Canvas" : "Gmail", htmlUrl: work.url, dueAt: work.dueAt, resources: sourceResources(work), priority: block.priority });
     }
   }
 
   const range = { start: Temporal.Instant.from(plan.window.start).toZonedDateTimeISO(plan.timeZone).startOfDay().toInstant(), end: Temporal.Instant.from(plan.window.end) };
   for (const event of plan.sourceData.calendarEvents) {
     for (const segment of intervalDays(event.start, event.end, plan.timeZone, range)) {
-      events.push({ ...segment, id: `google-calendar:${encodeURIComponent(event.id)}:${segment.date}`, kind: "class", title: event.summary, shortLabel: event.summary, allDay: Boolean(event.allDay), startMinutes: event.allDay ? null : segment.startMinutes, endMinutes: event.allDay ? null : segment.endMinutes, timeLabel: event.allDay ? "All day" : segment.timeLabel, courseCode: "", courseName: "", estimate: estimateLabel(segment.durationMinutes), estimateNote: "hours · calendar event duration", description: "Busy time from your primary Google Calendar.", summary: "This Google Calendar event is treated as busy time when scheduling study blocks.", sourceProvider: "google-calendar", sourceLabel: "Google Calendar", resources: [] });
+      events.push({ ...segment, id: `google-calendar:${encodeURIComponent(event.id)}:${segment.date}`, kind: "class", tone: "class", title: event.summary, shortLabel: event.summary, allDay: Boolean(event.allDay), startMinutes: event.allDay ? null : segment.startMinutes, endMinutes: event.allDay ? null : segment.endMinutes, timeLabel: event.allDay ? "All day" : segment.timeLabel, courseCode: "", courseName: "", estimate: estimateLabel(segment.durationMinutes), estimateNote: "hours · calendar event duration", description: "Busy time from your primary Google Calendar.", summary: "This Google Calendar event is treated as busy time when scheduling study blocks.", sourceProvider: "google-calendar", sourceLabel: "Google Calendar", resources: [] });
     }
   }
 

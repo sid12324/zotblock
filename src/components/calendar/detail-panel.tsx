@@ -61,7 +61,7 @@ export function DetailPanel({ event, timeZone, onClose, onSaveAssignment, editsN
       </>}
       {deadline && <section><p className="label">Coursework deadline</p><p className="prose">{deadline}</p></section>}
       <AssignmentAttachments details={details}/>
-      <section><p className="label">Source</p><p className="prose">{event.kind === "study" ? `Generated from your ${sourceName(event)} coursework and available calendar time.` : event.kind === "due" ? `An academic deadline from ${sourceName(event)}.` : "A read only event from your primary Google Calendar."}</p></section>
+      <section><p className="label">Source</p><p className="prose">{event.id.startsWith("drop:") ? "A block you added on this calendar." : event.kind === "study" ? `Generated from your ${sourceName(event)} coursework and available calendar time.` : event.kind === "due" ? `An academic deadline from ${sourceName(event)}.` : "A read only event from your primary Google Calendar."}</p></section>
     </div>
     {(url || exportUrl || calendarExport) && <div className="panel-actions">
       {url && <a className="canvas-btn" href={url} target="_blank" rel="noopener noreferrer">Open in {sourceName(event)}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3L11 8L6 13"/></svg></a>}

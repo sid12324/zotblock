@@ -2,7 +2,7 @@ import { Temporal } from "@js-temporal/polyfill";
 import type { CalendarDisplayEvent } from "@/lib/calendar/events";
 
 export const MINUTES_PER_DAY = 1440;
-export const HOUR_HEIGHT = 64;
+export const HOUR_HEIGHT = 76;
 
 export type CalendarNow = { date: string; minutes: number; label: string; epochMilliseconds: number };
 export type TimedEventPlacement = {

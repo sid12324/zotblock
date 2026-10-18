@@ -13,6 +13,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 button { color:inherit; }
 svg { flex-shrink:0; }
 .app-frame { min-height:100vh; display:flex; flex-direction:column; }
+.app-frame.pref-backdrop { background:radial-gradient(circle at 8% 12%, #ffffff 0 18%, transparent 19%), radial-gradient(circle at 92% 8%, #d7e7ff 0 16%, transparent 17%), radial-gradient(circle at 96% 88%, #d5e6ff 0 22%, transparent 23%), #eef4fb; background-attachment:fixed; }
 .app-shell { width:100%; max-width:1440px; margin:0 auto; display:flex; flex-direction:column; flex:1; }
 .zb-header { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:12px 6%; }
 .zb-brand { display:flex; align-items:center; gap:10px; flex-shrink:0; color:#19345c; }

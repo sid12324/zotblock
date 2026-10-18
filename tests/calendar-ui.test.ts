@@ -28,7 +28,7 @@ test("the calendar entry imports the layout CSS required to turn Week and Day ma
     assert.match(declarations(selector), /grid-template-columns:var\(--time-gutter\)repeat\(var\(--day-count\),minmax\(0,1fr\)\);/);
   }
   assert.match(declarations(".time-grid-body"), /height:calc\(var\(--hour-height\)\*24\);/);
-  assert.equal(HOUR_HEIGHT * 24, 1536);
+  assert.equal(HOUR_HEIGHT * 24, 1824);
   assert.match(declarations(".time-day-track"), /position:relative;/);
   assert.match(declarations(".time-day-track"), /height:100%;/);
   assert.match(declarations(".time-event"), /position:absolute;/);

@@ -75,7 +75,7 @@ export function useGoogleCalendarExport(plan: StudyPlan | null, disabledReason: 
 
 export type GoogleCalendarExportController = ReturnType<typeof useGoogleCalendarExport>;
 
-export function GoogleCalendarExport({ controller, selectedId, compact = false }: { controller: GoogleCalendarExportController; selectedId?: string; compact?: boolean }) {
+export function GoogleCalendarExport({ controller, selectedId, compact = false, pill = false }: { controller: GoogleCalendarExportController; selectedId?: string; compact?: boolean; pill?: boolean }) {
   const id = useId();
   const [scope, setScope] = useState<CalendarExportScope>("all");
   const selected = controller.items.filter(item => selectedId !== undefined && item.displayIds.includes(selectedId));
@@ -94,9 +94,9 @@ export function GoogleCalendarExport({ controller, selectedId, compact = false }
   const blocked = controller.disabledReason || (chosen.length === 0 ? "No study blocks or deadlines in this saved plan." : null);
   const label = controller.running ? "Exporting…" : remaining ? `Retry ${remaining} ${remaining === 1 ? "event" : "events"}` : complete ? "Exported to Google Calendar" : "Export to Google Calendar";
 
-  return <section className={`calendar-export-control ${compact ? "compact-export" : ""}`} aria-label="Export study plan to Google Calendar">
-    {!compact && selected.length > 0 && <label className="calendar-export-scope" htmlFor={`${id}-scope`}><span>Export</span><select id={`${id}-scope`} value={effectiveScope} onChange={event => setScope(event.target.value as CalendarExportScope)} disabled={controller.running}><option value="all">Whole plan ({controller.items.length} events)</option><option value="selected">Only this event</option></select></label>}
-    <div className="calendar-export-main"><div className="calendar-export-description"><p>{calendarExportSummary(chosen)}</p><span>{effectiveScope === "all" ? "Whole saved plan" : "Selected event"} · primary Google Calendar · 15-minute deadline reminders.</span></div><button type="button" className="google-calendar-export" onClick={() => void controller.exportItems(effectiveScope, selectedId)} disabled={controller.running || !!blocked || complete || needsAuthorization} aria-describedby={`${id}-status`}><span className="calendar-export-label"><CalendarIcon className="calendar-export-icon"/><span>{label}</span></span><ArrowRight className="calendar-export-arrow"/></button></div>
+  return <section className={`calendar-export-control ${compact ? "compact-export" : ""} ${pill ? "export-pill" : ""}`} aria-label="Export study plan to Google Calendar">
+    {!compact && !pill && selected.length > 0 && <label className="calendar-export-scope" htmlFor={`${id}-scope`}><span>Export</span><select id={`${id}-scope`} value={effectiveScope} onChange={event => setScope(event.target.value as CalendarExportScope)} disabled={controller.running}><option value="all">Whole plan ({controller.items.length} events)</option><option value="selected">Only this event</option></select></label>}
+    <div className="calendar-export-main">{!pill && <div className="calendar-export-description"><p>{calendarExportSummary(chosen)}</p><span>{effectiveScope === "all" ? "Whole saved plan" : "Selected event"} · primary Google Calendar · 15-minute deadline reminders.</span></div>}<button type="button" className="google-calendar-export" onClick={() => void controller.exportItems(effectiveScope, selectedId)} disabled={controller.running || !!blocked || complete || needsAuthorization} aria-describedby={`${id}-status`}><span className="calendar-export-label"><CalendarIcon className="calendar-export-icon"/><span>{label}</span></span>{!pill && <ArrowRight className="calendar-export-arrow"/>}</button></div>
     <div id={`${id}-status`} className="calendar-export-status" aria-live="polite" aria-atomic="true">
       {blocked && <p>{blocked}</p>}
       {controller.running && <p role="status">Adding events to Google Calendar. Keep this page open until export finishes.</p>}
