@@ -32,7 +32,7 @@ function AssignmentAttachments({ details }: { details?: AssignmentDetails }) {
   return attachments.length > 0 && <section aria-labelledby="assignment-attachments-heading"><h3 className="label" id="assignment-attachments-heading">Attachments</h3><ul className="assignment-attachments">{attachments.map((attachment, index) => <li key={`${attachment.url}:${index}`}><a href={attachment.url} target="_blank" rel="noopener noreferrer">{attachment.title}<span aria-hidden="true">↗</span></a></li>)}</ul></section>;
 }
 
-export function DetailPanel({ event, timeZone, onClose, onSaveAssignment, editsNotice, calendarExport, focusAction }: { event: CalendarDisplayEvent; timeZone: string; onClose: () => void; onSaveAssignment?: (edits: AssignmentEdits | null) => void; editsNotice?: string | null; calendarExport?: GoogleCalendarExportController; focusAction?: ReactNode }) {
+export function DetailPanel({ event, timeZone, onClose, onSaveAssignment, editsNotice, calendarExport, focusAction, completed = false, onToggleComplete }: { event: CalendarDisplayEvent; timeZone: string; onClose: () => void; onSaveAssignment?: (edits: AssignmentEdits | null) => void; editsNotice?: string | null; calendarExport?: GoogleCalendarExportController; focusAction?: ReactNode; completed?: boolean; onToggleComplete?: () => void }) {
   const panelRef = useRef<HTMLElement>(null);
   const url = sourceUrl(event.htmlUrl);
   const exportUrl = !calendarExport && event.sourceProvider !== "google-calendar" && (event.kind === "study" || event.kind === "due") ? googleCalendarExportUrl(event, timeZone) : null;
@@ -45,12 +45,13 @@ export function DetailPanel({ event, timeZone, onClose, onSaveAssignment, editsN
   const details = assignment?.details ?? event.assignmentDetails;
   useEffect(() => { panelRef.current?.focus(); }, [event.id]);
   return <aside className="panel" aria-labelledby="calendar-event-title" ref={panelRef} tabIndex={-1}>
-    <div className="panel-head"><span>{event.kind === "study" ? "STUDY BLOCK" : event.kind === "due" ? "DEADLINE" : "CALENDAR EVENT"}</span><button type="button" aria-label="Close event details" onClick={onClose}><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2L12 12M12 2L2 12"/></svg></button></div>
+    <div className="panel-head"><span>{event.kind === "study" ? completed ? "STUDY BLOCK · DONE" : "STUDY BLOCK" : event.kind === "due" ? "DEADLINE" : "CALENDAR EVENT"}</span><button type="button" aria-label="Close event details" onClick={onClose}><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2L12 12M12 2L2 12"/></svg></button></div>
     <div className="panel-scroll">
       {course && <p className="course">{course}</p>}
       <p className="when">{event.kind === "due" ? "Due " : ""}{date}{event.timeLabel ? ` · ${event.timeLabel}` : " · All day"}</p>
       <p className="timezone">{timeZone.replaceAll("_", " ")}</p>
-      <h2 id="calendar-event-title">{event.title}</h2>
+      <h2 id="calendar-event-title" className={completed ? "is-complete" : undefined}>{event.title}</h2>
+      {event.kind === "study" && onToggleComplete && <button type="button" className={completed ? "complete-toggle is-complete" : "complete-toggle"} aria-pressed={completed} onClick={onToggleComplete}>{completed ? "Completed — mark as not done" : "Mark complete"}</button>}
       {typeof duration === "number" && duration > 0 ? <div className="estimate"><div className="estimate-bar"/><div><p className="label">Duration</p><p className="estimate-num">{Math.floor(duration / 60)}:{String(duration % 60).padStart(2, "0")}</p><p className="note">hours · {event.kind === "study" ? "scheduled study time" : "calendar event"}</p></div></div> : event.estimate && <div className="estimate"><div className="estimate-bar"/><div><p className="label">Estimated study time</p><p className="estimate-num">{event.estimate}</p><p className="note">{event.estimateNote}</p></div></div>}
       {focusAction}
       {assignment && onSaveAssignment ? <AssignmentEditor key={`${assignment.url ?? assignment.course}:${assignment.id}`} assignment={assignment} timeZone={timeZone} onSave={onSaveAssignment} notice={editsNotice}/> : <>

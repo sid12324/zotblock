@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ZotBlock Focus Guard</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <img src="anteater.png" alt="" />
+      <div>
+        <strong>Focus Guard</strong>
+        <p id="status">Checking your timer…</p>
+      </div>
+    </header>
+    <form id="add-site">
+      <label for="site">Sites to cover while a timer is running</label>
+      <div>
+        <input id="site" name="site" placeholder="example.com" autocomplete="off" />
+        <button type="submit">Add</button>
+      </div>
+      <p id="site-error" role="alert"></p>
+    </form>
+    <ul id="sites"></ul>
+    <script src="logic.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

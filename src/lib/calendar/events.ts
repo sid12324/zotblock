@@ -1,9 +1,11 @@
 import { Temporal } from "@js-temporal/polyfill";
+import { studyBlockCompletionKey } from "@/lib/completed-blocks";
 import type { Assignment, AssignmentDetails, ProviderId, StudyPlan, StudyTask } from "@/lib/types";
 
 export type CalendarDisplayEvent = {
   id: string;
   kind: "study" | "class" | "due";
+  completionKey?: string;
   title: string;
   shortLabel: string;
   date: string;
@@ -159,7 +161,7 @@ export function calendarEventsFromPlan(plan: StudyPlan): CalendarDisplayEvent[] 
   for (const block of plan.studyBlocks) {
     const work = works.get(workKey(block.source.provider, block.source.id, block.source.title, block.source.dueAt))!;
     for (const segment of intervalDays(block.start.dateTime, block.end.dateTime, plan.timeZone)) {
-      events.push({ ...segment, id: `study:${encodeURIComponent(block.id)}:${segment.date}`, kind: "study", exportStart: block.start.dateTime, exportEnd: block.end.dateTime, title: block.summary, shortLabel: block.summary, allDay: false, courseCode: "", courseName: work.course, estimate: estimateLabel(segment.durationMinutes), estimateNote: "hours · scheduled study duration", description: work.provider === "canvas" ? work.description : block.description || work.description, assignmentDetails: work.details, assignment: work.assignment, summary: `Scheduled study time for ${work.title}. Deadline: ${deadlineLabel(work.dueAt, plan.timeZone)}.`, sourceProvider: work.provider, sourceLabel: work.provider === "canvas" ? "Canvas" : "Gmail", htmlUrl: work.url, dueAt: work.dueAt, resources: sourceResources(work), priority: block.priority });
+      events.push({ ...segment, id: `study:${encodeURIComponent(block.id)}:${segment.date}`, completionKey: studyBlockCompletionKey(block), kind: "study", exportStart: block.start.dateTime, exportEnd: block.end.dateTime, title: block.summary, shortLabel: block.summary, allDay: false, courseCode: "", courseName: work.course, estimate: estimateLabel(segment.durationMinutes), estimateNote: "hours · scheduled study duration", description: work.provider === "canvas" ? work.description : block.description || work.description, assignmentDetails: work.details, assignment: work.assignment, summary: `Scheduled study time for ${work.title}. Deadline: ${deadlineLabel(work.dueAt, plan.timeZone)}.`, sourceProvider: work.provider, sourceLabel: work.provider === "canvas" ? "Canvas" : "Gmail", htmlUrl: work.url, dueAt: work.dueAt, resources: sourceResources(work), priority: block.priority });
     }
   }
 

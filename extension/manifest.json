@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "ZotBlock Focus Guard",
+  "version": "1.0.0",
+  "description": "Covers distracting sites while a ZotBlock focus timer is running.",
+  "permissions": ["storage", "tabs", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "background": { "scripts": ["logic.js", "background.js"] },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "ZotBlock Focus Guard",
+    "default_icon": "anteater.png"
+  },
+  "icons": { "48": "anteater.png", "128": "anteater.png" },
+  "content_scripts": [
+    {
+      "matches": ["http://localhost:3000/*", "http://127.0.0.1:3000/*"],
+      "js": ["logic.js", "bridge.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["logic.js", "guard.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    { "resources": ["anteater.png"], "matches": ["http://*/*", "https://*/*"] }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "zotblock-focus-guard@zotblock.local",
+      "strict_min_version": "128.0"
+    }
+  }
+}

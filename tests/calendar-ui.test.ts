@@ -92,7 +92,7 @@ test("clock changes split actual event intervals without inventing a minimum dur
 
 test("Week and Day render one current-time marker only when that local date is visible", () => {
   const now = calendarNow("America/Los_Angeles", Temporal.Instant.from("2026-10-18T02:17:00Z"));
-  const props = { cursor: new Date(2026, 9, 17), today: new Date(2026, 9, 17), events: [], selectedId: null, onSelect: () => {}, now, timeZone: "America/Los_Angeles" };
+  const props = { cursor: new Date(2026, 9, 17), today: new Date(2026, 9, 17), events: [], selectedId: null, completedKeys: new Set<string>(), onSelect: () => {}, now, timeZone: "America/Los_Angeles" };
   for (const View of [WeekView, DayView]) {
     const current = renderToStaticMarkup(createElement(View, props));
     const future = renderToStaticMarkup(createElement(View, { ...props, cursor: new Date(2026, 9, 26) }));

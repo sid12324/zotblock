@@ -603,3 +603,21 @@
 .zot-calendar a:focus-visible,
 .zot-calendar input:focus-visible { outline-color:#315a94; }
 @media(max-width:900px) { .zot-calendar .app { height:auto; flex:1; min-height:0; } }
+
+/* Finished study blocks stay on the calendar, crossed off, with diagonal stripes. */
+.zot-calendar .chip.study.completed,
+.zot-calendar .time-event.study.completed,
+.zot-calendar .chip.study.completed.selected,
+.zot-calendar .time-event.study.completed.selected {
+  background-color:#e7eef9;
+  background-image:repeating-linear-gradient(-45deg, rgba(49, 90, 148, 0.28) 0 7px, transparent 7px 14px);
+  color:#5c6e88;
+}
+.zot-calendar .chip.study.completed span,
+.zot-calendar .time-event.study.completed em,
+.zot-calendar .time-event.study.completed strong,
+.zot-calendar .panel h2.is-complete { text-decoration:line-through; text-decoration-thickness:1.5px; }
+.zot-calendar .complete-toggle { margin:16px 0 4px; min-height:40px; padding:8px 12px; border:1px solid #315a94; border-radius:11px; background:#fff; color:#19345c; font:650 13px "DM Sans", sans-serif; }
+.zot-calendar .complete-toggle.is-complete { background-color:#e7eef9; background-image:repeating-linear-gradient(-45deg, rgba(49, 90, 148, 0.22) 0 7px, transparent 7px 14px); }
+.zot-calendar .complete-toggle:hover { background-color:#dce7f8; }
+.zot-calendar .calendar-legend .completed-key { width:14px; background-color:#e7eef9; background-image:repeating-linear-gradient(-45deg, rgba(49, 90, 148, 0.7) 0 2px, transparent 2px 4px); }

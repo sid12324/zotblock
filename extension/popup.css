@@ -1,0 +1,14 @@
+body { width: 320px; margin: 0; padding: 16px; background: #f8f9fc; color: #19345c; font: 14px/1.4 "Segoe UI", sans-serif; }
+header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+img { width: 48px; height: auto; }
+strong { display: block; font-size: 16px; }
+header p, #site-error { margin: 2px 0 0; color: #5d6d86; font-size: 12px; }
+#site-error { min-height: 16px; color: #9b3040; }
+label { display: block; margin-bottom: 8px; font-size: 12px; font-weight: 700; }
+form div { display: flex; gap: 8px; }
+input { flex: 1; min-width: 0; border: 1px solid #c5d2e6; border-radius: 8px; padding: 8px; font: inherit; }
+button, .remove { border: 0; border-radius: 8px; background: #254c83; color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+button { padding: 8px 10px; }
+ul { list-style: none; margin: 12px 0 0; padding: 0; max-height: 240px; overflow: auto; }
+li { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 7px 0; border-top: 1px solid #e1e8f4; font-size: 13px; }
+.remove { padding: 4px 8px; background: transparent; color: #254c83; }

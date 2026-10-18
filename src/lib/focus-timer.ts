@@ -235,6 +235,12 @@ export function createFocusTimerStore(options: FocusTimerStoreOptions = {}) {
       if (remote) merge(remote);
       browserStorage.setItem(FOCUS_TIMER_STORAGE_KEY, JSON.stringify(data));
       if (storageNotice === STORAGE_NOTICE) storageNotice = null;
+      if (typeof document !== "undefined" && document.documentElement) {
+        const session = data.session;
+        const active = session?.status === "running" && typeof session.endsAt === "number";
+        document.documentElement.dataset.zotblockFocus = JSON.stringify(active ? { active: true, endsAt: session.endsAt, title: session.target.title } : { active: false });
+        document.dispatchEvent(new CustomEvent("zotblock-focus-guard"));
+      }
     } catch { storageNotice = STORAGE_NOTICE; }
   }
 
