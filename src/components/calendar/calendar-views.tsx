@@ -37,7 +37,7 @@ function TimeGrid({ days, today, events, selectedId, completedKeys, onSelect, no
   // Scroll once per displayed range; streamed blocks and minute ticks leave the user's position alone.
   useLayoutEffect(() => {
     const root = rootRef.current;
-    const scroll = root?.parentElement;
+    const scroll = root?.closest<HTMLElement>(".calendar-view-scroll");
     const body = root?.querySelector<HTMLElement>(".time-grid-body");
     if (!root || !scroll || !body || lastScrolledRange.current === rangeKey) return;
     lastScrolledRange.current = rangeKey;
